@@ -6,7 +6,7 @@ from sklearn.preprocessing import OneHotEncoder
 
 # DATA ENCODING
 # ==============================================================================
-def _encode(X,y):
+def _encode(X,y=None):
     """
     We will do Feature Engineering related to the values of our dataframe to:
     - encode categorical variables
@@ -18,7 +18,7 @@ def _encode(X,y):
     Returns:
     pd.DataFrame: Transformed DataFrame with encoded categorical features.
     """
-
+    
     categorical_cols = X.select_dtypes(exclude=[np.number]).columns
 
     preprocessor = ColumnTransformer(
@@ -37,5 +37,7 @@ def _encode(X,y):
 
     column_names = list(transformed_columns) + list(X.select_dtypes(include = [np.number]).columns)
 
-    return pd.DataFrame(X_transformed, columns=column_names), np.log(y)
-
+    if y is not None:
+        return pd.DataFrame(X_transformed, columns=column_names), np.log(y)
+    else:
+        return pd.DataFrame(X_transformed, columns=column_names)
